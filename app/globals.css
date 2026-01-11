@@ -15,6 +15,24 @@
   --font-poppins: var(--font-poppins);
 }
 
+html {
+  overflow-x: hidden;
+}
+
 * {
   @apply font-poppins;
+}
+
+/* Input Group */
+.input-group {
+  @apply mb-5;
+}
+
+.input-group label {
+  @apply block text-xs mb-1;
+}
+
+.input-group input, 
+.input-group textarea {
+  @apply px-4 py-2.5 bg-gray-100 w-full focus:border focus:border-gray-400 outline-none text-sm;
 }
