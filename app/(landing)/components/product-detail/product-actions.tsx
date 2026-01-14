@@ -26,6 +26,7 @@ const ProductActions = ({ product, stock }: TProductActionsProps) => {
   };
 
   const CheckoutProduct = () => {
+    addItem(product);
     push("/checkout");
   };
 
