@@ -1,45 +1,67 @@
-"use client"
+"use client";
 
-import {FiArrowRight, FiChevronDown, FiChevronUp, FiShoppingBag} from "react-icons/fi"
-import Button from "../ui/button"
-import { useState } from "react"
-import { useRouter } from "next/navigation"
+import {
+  FiArrowRight,
+  FiChevronDown,
+  FiChevronUp,
+  FiShoppingBag,
+} from "react-icons/fi";
+import Button from "../ui/button";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useCartStore } from "@/app/hooks/use-cart-store";
+import { Product } from "@/app/types";
 
-const ProductActions = () => {
-  const {push} = useRouter();
+type TProductActionsProps = {
+  product: Product;
+  stock: number;
+};
+const ProductActions = ({ product, stock }: TProductActionsProps) => {
+  const { addItem } = useCartStore();
+  const { push } = useRouter();
   const [quantity, setQuantity] = useState(1);
 
+  const handleAddtoCart = () => {
+    addItem(product, quantity);
+  };
+
   const CheckoutProduct = () => {
-    push('/checkout');
-  }
-  
+    push("/checkout");
+  };
+
   return (
     <div className="flex gap-5">
-        <div className="border border-gray-500 flex w-fit min-w-20.5"> 
-            <div className="aspect-square text-xl font-medium border-r border-gray-500 flex justify-center items-center px-4 cursor-pointer select-none">
-                <span>{quantity}</span>
-            </div>
-            <div className="flex flex-col">
-                <button className="border-b border-gray-500 cursor-pointer h-1/2 aspect-square flex items-center justify-center"
-                onClick={() => setQuantity(quantity + 1)}>
-                <FiChevronUp size={20}/>
-                </button>
-                <button className=" cursor-pointer h-1/2 aspect-square flex items-center justify-center"
-                onClick={() => setQuantity(quantity - 1 >= 1 ? quantity - 1 : 1)}>
-                <FiChevronDown size={20}/>
-                </button>
-            </div>
+      <div className="border border-gray-500 flex w-fit min-w-20.5">
+        <div className="aspect-square text-xl font-medium border-r border-gray-500 flex justify-center items-center px-4 cursor-pointer select-none">
+          <span>{quantity}</span>
         </div>
-        <Button className="px-20 w-full">
-          <FiShoppingBag size={24}/>
-          Add to Cart
-        </Button>
-        <Button variant="dark" className="px-20 w-full" onClick={CheckoutProduct}>
-          Checkout Now
-          <FiArrowRight size={24}/>
-        </Button>
+        <div className="flex flex-col">
+          <button
+            className="border-b border-gray-500 cursor-pointer h-1/2 aspect-square flex items-center justify-center"
+            onClick={() =>
+              setQuantity(quantity < stock ? quantity + 1 : quantity)
+            }
+          >
+            <FiChevronUp size={20} />
+          </button>
+          <button
+            className=" cursor-pointer h-1/2 aspect-square flex items-center justify-center"
+            onClick={() => setQuantity(quantity - 1 >= 1 ? quantity - 1 : 1)}
+          >
+            <FiChevronDown size={20} />
+          </button>
+        </div>
+      </div>
+      <Button className="px-20 w-full" onClick={handleAddtoCart}>
+        <FiShoppingBag size={24} />
+        Add to Cart
+      </Button>
+      <Button variant="dark" className="px-20 w-full" onClick={CheckoutProduct}>
+        Checkout Now
+        <FiArrowRight size={24} />
+      </Button>
     </div>
-  )
-}
+  );
+};
 
-export default ProductActions
+export default ProductActions;
