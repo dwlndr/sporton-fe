@@ -5,13 +5,14 @@ import { useState } from "react";
 import Image from "next/image";
 import priceFormatter from "@/app/utils/price-formatter";
 import { FiCheck, FiX } from "react-icons/fi";
-import { Transaction } from "@/app/types";
+import { Transaction, Product } from "@/app/types";
 import { getImageUrl } from "@/app/lib/api";
 
 type TTransactionModalProps = {
   isOpen: boolean;
   onClose: () => void;
   transaction: Transaction | null;
+  products: Product[];
   onStatusChange: (id: string, status: "paid" | "rejected") => Promise<void>;
 };
 
@@ -19,11 +20,12 @@ const TransactionModal = ({
   isOpen,
   onClose,
   transaction,
+  products,
   onStatusChange,
 }: TTransactionModalProps) => {
   const [isUpdating, setIsUpdating] = useState(false);
 
-  if (!transaction) return;
+  if (!transaction) return null;
 
   const handleStatusUpdate = async (status: "paid" | "rejected") => {
     setIsUpdating(true);
@@ -35,6 +37,9 @@ const TransactionModal = ({
       setIsUpdating(false);
     }
   };
+
+  const findProduct = (id: string) =>
+    products.find((p) => p._id === id) || null;
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Verify Transactions">
@@ -88,22 +93,38 @@ const TransactionModal = ({
           <h4 className="font-semibold text-sm mb-2">Items Purchased</h4>
 
           <div className="space-y-3">
-            {transaction.purchasedItems.map((item, index) => (
-              <div className="border border-gray-200 rounded-lg p-2 flex items-center gap-2">
-                <div className="bg-gray-100 rounded aspect-square w-8 h-8">
-                  <Image
-                    src={getImageUrl(item.productId.imageUrl)}
-                    width={30}
-                    height={30}
-                    alt="product image"
-                  />
+            {transaction.purchasedItems.map((item, index) => {
+              const product = findProduct(item.productId);
+
+              return (
+                <div
+                  key={`${transaction._id}-${item.productId}-${index}`}
+                  className="border border-gray-200 rounded-lg p-2 flex items-center gap-2"
+                >
+                  {product ? (
+                    <>
+                      <div className="bg-gray-100 rounded aspect-square w-8 h-8">
+                        <Image
+                          src={getImageUrl(product.imageUrl)}
+                          width={30}
+                          height={30}
+                          alt={product.name}
+                        />
+                      </div>
+                      <div className="font-medium text-sm">{product.name}</div>
+                    </>
+                  ) : (
+                    <div className="text-red-600 italic text-sm">
+                      Produk telah dihapus
+                    </div>
+                  )}
+
+                  <div className="font-medium ml-auto text-sm">
+                    {item.qty} units
+                  </div>
                 </div>
-                <div className="font-medium text-sm">{item.productId.name}</div>
-                <div className="font-medium ml-auto text-sm">
-                  {item.qty} units
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
           <div className="flex justify-between  text-sm mt-6">
             <h4 className="font-semibold">Total </h4>

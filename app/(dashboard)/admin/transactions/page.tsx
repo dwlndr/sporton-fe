@@ -5,26 +5,33 @@ import { FiPlus } from "react-icons/fi";
 import TransactionTable from "../../components/transactions/transaction-table";
 import TransactiontModal from "../../components/transactions/transaction-modal";
 import { useState, useEffect } from "react";
-import { Transaction } from "@/app/types";
+import { Transaction, Product } from "@/app/types";
 import {
   getAllTransactions,
   updateTransaction,
 } from "@/app/services/transaction.service";
+import { getAllProducts } from "@/app/services/product.service";
 import { toast } from "react-toastify";
 
 const TransactionManagement = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedTransaction, setSelectedTransaction] =
     useState<Transaction | null>(null);
+  const [products, setProducts] = useState<Product[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
 
   const fetchTransactions = async () => {
     try {
-      const data = await getAllTransactions();
-      setTransactions(data);
-    } catch (error) {
-      console.error("Failed to fetch transactions", error);
-    }
+    const [trx, prods] = await Promise.all([
+      getAllTransactions(),
+      getAllProducts(),
+    ]);
+    setTransactions(trx);
+    setProducts(prods);
+  } catch (e) {
+    console.error(e);
+  }
+
   };
 
   const handleCloseModal = () => {
@@ -77,6 +84,7 @@ const TransactionManagement = () => {
       />
       <TransactiontModal
         transaction={selectedTransaction}
+        products={products}
         onStatusChange={handleStatusChange}
         isOpen={isModalOpen}
         onClose={handleCloseModal}
