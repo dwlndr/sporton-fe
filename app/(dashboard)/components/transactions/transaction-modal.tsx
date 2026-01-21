@@ -38,8 +38,13 @@ const TransactionModal = ({
     }
   };
 
-  const findProduct = (id: string) =>
-    products.find((p) => p._id === id) || null;
+  const findProduct = (id: any) => {
+    if (!id) return null;
+
+    const productId = typeof id === "string" ? id : id._id || id.id || null;
+
+    return products.find((p) => String(p._id) === String(productId)) || null;
+  };
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Verify Transactions">
