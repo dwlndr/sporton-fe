@@ -1,7 +1,7 @@
 import Image from "next/image";
 import ProductActions from "../../components/product-detail/product-actions";
 import { getProductById } from "@/app/services/product.service";
-import { getImageURL } from "@/app/lib/api";
+import { getImageUrl } from "@/app/lib/api";
 import priceformatter from "@/app/utils/price-formatter";
 
 export type TPageProps = {
@@ -9,7 +9,7 @@ export type TPageProps = {
 };
 
 const ProductDetail = async ({ params }: TPageProps) => {
-  const {id} = await params;
+  const { id } = await params;
 
   const product = await getProductById(id);
 
@@ -17,7 +17,7 @@ const ProductDetail = async ({ params }: TPageProps) => {
     <main className="container mx-auto py-25 flex gap-12">
       <div className="bg-primary-light aspect-square min-w-140 flex justify-center items-center">
         <Image
-          src={getImageURL(product.imageUrl)}
+          src={getImageUrl(product.imageUrl)}
           alt={product.name}
           className="aspect-square w-full object-contain"
           width={550}
@@ -33,7 +33,7 @@ const ProductDetail = async ({ params }: TPageProps) => {
           {product.description}
         </p>
         <div className="text-primary text-[32px] font-semibold mb-12">
-            {priceformatter(product.price)}
+          {priceformatter(product.price)}
         </div>
         <ProductActions product={product} stock={product.stock} />
       </div>

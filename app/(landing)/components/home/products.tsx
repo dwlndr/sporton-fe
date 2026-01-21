@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
 import Image from "next/image";
 import Link from "next/link";
 import Button from "../ui/button";
 import { FiPlus } from "react-icons/fi";
 import { Product } from "@/app/types";
-import { getImageURL } from "@/app/lib/api";
+import { getImageUrl } from "@/app/lib/api";
 import priceformatter from "@/app/utils/price-formatter";
 import { useCartStore } from "@/app/hooks/use-cart-store";
 
@@ -36,13 +36,16 @@ const ProductsSection = ({ products }: TProductsProps) => {
           >
             <div className="bg-primary-light aspect-square w-full flex justify-center items-center relative">
               <Image
-                src={getImageURL(product.imageUrl)}
+                src={getImageUrl(product.imageUrl)}
                 alt={product.name}
                 width={300}
                 height={300}
                 className="aspect-square object-contain"
               />
-              <Button className="w-10 h-10 p-2! absolute right-3 top-3" onClick={(e)=>handleAddtoCart(e, product)}>
+              <Button
+                className="w-10 h-10 p-2! absolute right-3 top-3"
+                onClick={(e) => handleAddtoCart(e, product)}
+              >
                 <FiPlus size={24} />
               </Button>
             </div>
