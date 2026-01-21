@@ -18,7 +18,7 @@ const TransactionModal = ({ isOpen, onClose }: TTransactionModalProps) => {
         <div>
           <h4 className="font-semibold text-sm mb-2">Payment Proof</h4>
           <Image
-            src="/images/payment-proof-dummy.png"
+            src="/images/payment-dummy.jpg"
             alt="payment proof"
             width={200}
             height={401}
@@ -53,7 +53,7 @@ const TransactionModal = ({ isOpen, onClose }: TTransactionModalProps) => {
           <div className="border border-gray-200 rounded-lg p-2 flex items-center gap-2">
             <div className="bg-gray-100 rounded aspect-square w-8 h-8">
               <Image
-                src="/images/products/product-1.png"
+                src="/images/products/product (1).png"
                 width={30}
                 height={30}
                 alt="product image"
