@@ -1,4 +1,4 @@
-import { getImageURL } from "@/app/lib/api";
+import { getImageUrl } from "@/app/lib/api";
 import { Category } from "@/app/types";
 import Image from "next/image";
 import Link from "next/link";
@@ -26,7 +26,7 @@ const CategoriesSection = ({ categories }: TCategoriesProps) => {
           >
             <div className="self-center">
               <Image
-                src={getImageURL(category.imageUrl)}
+                src={getImageUrl  (category.imageUrl)}
                 width={86}
                 height="86"
                 alt={category.name}

@@ -7,7 +7,7 @@ import { FiCreditCard, FiTrash2 } from "react-icons/fi";
 import CardWithHeader from "../ui/card-with-header";
 import { useRouter } from "next/navigation";
 import { useCartStore } from "@/app/hooks/use-cart-store";
-import { getImageURL } from "@/app/lib/api";
+import { getImageUrl } from "@/app/lib/api";
 
 type TCartItems = {
   handlePayment: () => void;
@@ -19,7 +19,7 @@ const CartItems = ({ handlePayment }: TCartItems) => {
 
   const totalPrice = items.reduce(
     (total, item) => total + item.price * item.quantity,
-    0
+    0,
   );
 
   return (
@@ -33,7 +33,7 @@ const CartItems = ({ handlePayment }: TCartItems) => {
             >
               <div className="bg-primary-light aspect-square w-16 flex justify-center items-center">
                 <Image
-                  src={getImageURL(item.imageUrl)}
+                  src={getImageUrl(item.imageUrl)}
                   width={63}
                   height={63}
                   alt={item.name}
